@@ -1,0 +1,42 @@
+---
+title: /list
+description: List all webhooks configured in the current server, with their IDs, hook URLs, status, and creation dates.
+icon: List
+---
+
+Lists all webhooks configured in the current server. For each webhook, the bot returns an embed containing its ID, hook URL, broken status, and creation date.
+
+If the server has no webhooks yet, the bot will prompt you to create one with `/newhook`.
+
+## Usage
+
+```
+/list
+git!list
+```
+
+## Parameters
+
+This command takes no parameters.
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+None.
+
+## Response fields
+
+| Field | Description |
+|---|---|
+| **Webhook ID** | The unique identifier for the webhook. You'll need this for `/newrepo`, `/delhook`, `/resetsecret`, etc. |
+| **Hook URL** | The Payload URL to register in GitHub webhook settings. |
+| **Marked as Broken** | Whether this webhook is flagged as broken. |
+| **Created at** | The timestamp when the webhook was created. |
+
+## Notes
+
+- Up to **5 webhooks** are allowed per server.
+- The hook URL format is `https://v2.gitlogs.xyz/kittycat?id=WEBHOOK_ID`.

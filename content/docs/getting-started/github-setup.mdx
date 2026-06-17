@@ -1,0 +1,104 @@
+---
+title: Connect GitHub
+description: Register your Octoflow webhook URL in a GitHub repository or organization.
+icon: Github
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+<Callout type="info">
+  Webhooks can be added to a single **repository** or an entire **organization**. Adding to an organization means all repos in that org can share one webhook — we recommend this approach where possible.
+</Callout>
+
+## Step 1: Register the webhook in GitHub
+
+<Steps>
+  <Step>
+    ### Open repository or organization settings
+
+    Navigate to the GitHub repository (or organization) and click the **Settings** tab.
+
+    ![Repository settings tab](/samples/repo/settings.png)
+  </Step>
+
+  <Step>
+    ### Go to Webhooks
+
+    In the left sidebar, click **Webhooks**, then click **Add webhook**.
+
+    ![Add webhook button](/samples/repo/add-hook.png)
+  </Step>
+
+  <Step>
+    ### Fill in the form
+
+    Use the credentials from the DM the bot sent you:
+
+    | Field | Value |
+    |---|---|
+    | **Payload URL** | `https://v2.gitlogs.xyz/kittycat?id=YOUR_WEBHOOK_ID` |
+    | **Content type** | `application/json` |
+    | **Secret** | The secret from your bot DM |
+    | **Which events** | "Send me everything" or pick specific ones |
+
+    ![Webhook form filled in](/samples/repo/webhook-form.png)
+
+    <Callout type="warn">
+      Content type **must** be set to `application/json`. The bot will not process events sent as `application/x-www-form-urlencoded`.
+    </Callout>
+  </Step>
+
+  <Step>
+    ### Save the webhook
+
+    Click **Add webhook**. GitHub will send a `ping` event to verify the URL is reachable.
+  </Step>
+</Steps>
+
+## Step 2: Link a repository in the bot
+
+Now tell the bot which Discord channel to route events from this repo to.
+
+Run `/newrepo` with the following parameters:
+
+<TypeTable
+  type={{
+    webhook_id: {
+      description: 'The webhook ID from your bot DM',
+      type: 'string',
+      required: true,
+    },
+    owner: {
+      description: 'The GitHub user or organization name (e.g. Git-Logs)',
+      type: 'string',
+      required: true,
+    },
+    name: {
+      description: 'The repository name (e.g. Documentation)',
+      type: 'string',
+      required: true,
+    },
+    channel: {
+      description: 'The Discord channel to send event notifications to',
+      type: 'channel',
+      required: true,
+    },
+  }}
+/>
+
+Example:
+
+```
+/newrepo webhook_id:abc123 owner:octocat name:my-repo channel:#github-events
+```
+
+![/newrepo command screenshot](/samples/repo/newrepo-cmd.png)
+
+Events will start flowing immediately after this command succeeds.
+
+## Troubleshooting
+
+- **206 status from GitHub delivery** — This means the webhook URL doesn't include the `repo_url` parameter. Make sure your Payload URL ends with `?id=YOUR_WEBHOOK_ID`.
+- **Bot not responding** — Check that the bot has **Send Messages** and **Embed Links** permissions in the target channel.
+- **No events appearing** — Confirm GitHub is delivering successfully by checking the **Recent Deliveries** tab on the webhook settings page.

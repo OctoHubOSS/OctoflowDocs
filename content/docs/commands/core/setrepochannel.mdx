@@ -1,0 +1,46 @@
+---
+title: /setrepochannel
+description: Change the Discord channel that a repository's events are delivered to.
+icon: Hash
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Updates the notification channel for an existing repository entry. Useful when you reorganize your Discord channels or want to reroute a repo's events.
+
+## Usage
+
+```
+/setrepochannel id:REPO_ID channel:#new-channel
+git!setrepochannel id:REPO_ID channel:#new-channel
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The repository ID. Find this with /list or from the output of /newrepo.',
+      type: 'string',
+      required: true,
+    },
+    channel: {
+      description: 'The new channel to deliver events to.',
+      type: 'channel',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- The repository must exist in the current server or the command will error.
+- Ensure the bot has **Send Messages** and **Embed Links** permission in the new channel.

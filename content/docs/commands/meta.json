@@ -1,0 +1,10 @@
+{
+  "title": "Commands",
+  "icon": "Terminal",
+  "pages": [
+    "index",
+    "core",
+    "modifiers",
+    "backups"
+  ]
+}

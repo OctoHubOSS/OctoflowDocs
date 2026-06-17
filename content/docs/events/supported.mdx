@@ -1,0 +1,54 @@
+---
+title: Supported Events
+description: The GitHub webhook events that Octoflow currently processes and delivers to Discord.
+icon: ListCheck
+---
+
+<Callout>
+  This list reflects the events Octoflow currently supports. More events are added over time. To request support for a specific event, join the [support server](https://discord.gg/Sj2SWMZe2J).
+</Callout>
+
+| Event | Description |
+|---|---|
+| `branch_protection_rule` | Branch protection rule created, edited, or deleted. |
+| `check_run` | Check run created, rerequested, or completed. |
+| `check_suite` | Check suite completed, requested, or rerequested. |
+| `commit_comment` | Comment created, edited, or deleted on a commit. |
+| `create` | Branch or tag created. |
+| `delete` | Branch or tag deleted. |
+| `dependabot_alert` | Dependabot alert created, dismissed, or resolved. |
+| `deployment` | Deployment created or updated. |
+| `deployment_status` | Status of a deployment changed. |
+| `discussion` | Discussion created, edited, deleted, pinned, transferred, answered, or unanswered. |
+| `discussion_comment` | Comment created, edited, or deleted in a discussion. |
+| `fork` | Repository forked. |
+| `issue_comment` | Comment created, edited, or deleted on an issue or pull request. |
+| `issues` | Issue opened, edited, closed, reopened, assigned, labeled, locked, transferred, etc. |
+| `page_build` | GitHub Pages site built or failed to build. |
+| `public` | Private repository made public. |
+| `pull_request` | Pull request opened, edited, closed, reopened, assigned, labeled, locked, synchronized, etc. |
+| `pull_request_review` | Pull request review submitted, edited, or dismissed. |
+| `pull_request_review_comment` | Comment created, edited, or deleted on a pull request review. |
+| `push` | Commits pushed to a branch or tag. |
+| `release` | Release published, unpublished, created, edited, deleted, or prereleased. |
+| `repository` | Repository created, deleted, archived, unarchived, publicized, or privatized. |
+| `star` | Repository starred or unstarred. |
+| `status` | Status of a Git commit changed. |
+| `team` | Team created, updated, or deleted. |
+| `watch` | Repository starred (watch event). |
+| `workflow_job` | GitHub Actions workflow job queued, started, or completed. |
+| `workflow_run` | GitHub Actions workflow run requested or completed. |
+
+## Using event modifiers to filter
+
+To only receive a subset of these events in a specific channel, use [`/eventmod create`](/docs/commands/modifiers/create) with `whitelisted:true` and list the events you want.
+
+Example — only receive push and pull request events:
+```
+/eventmod create webhook_id:abc123 events:push,pull_request blacklisted:false whitelisted:true
+```
+
+To suppress specific events, use `blacklisted:true` instead:
+```
+/eventmod create webhook_id:abc123 events:star,watch blacklisted:true whitelisted:false
+```

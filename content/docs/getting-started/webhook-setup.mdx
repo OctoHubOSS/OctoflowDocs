@@ -1,0 +1,53 @@
+---
+title: Create a Webhook
+description: Run /newhook to generate your webhook URL and secret credentials.
+icon: Webhook
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+A **webhook** is a record that connects your Discord server to the Octoflow API. You must create one before you can start monitoring repositories.
+
+<Callout type="info">
+  Both you and the bot need **Use Application Commands** permission in the channel where you run `/newhook`. Your DMs must also be open from server members — the bot sends your credentials via DM.
+</Callout>
+
+<Callout>
+  Each Discord server can have a maximum of **5 webhooks**.
+</Callout>
+
+<Steps>
+  <Step>
+    ### Run `/newhook`
+
+    In any channel where the bot has permission, run:
+
+    ```
+    /newhook comment:"My first webhook"
+    ```
+
+    The `comment` parameter is a label to help you identify this webhook later when you run `/list`. The optional `broken` flag defaults to `false`.
+
+    ![/newhook command screenshot](/samples/repo/newhook-cmd.png)
+  </Step>
+
+  <Step>
+    ### Check your DMs
+
+    The bot will reply in the channel to confirm the webhook was created, then DM you your credentials. The DM contains:
+
+    - **Webhook URL** — paste this into GitHub's webhook settings as the Payload URL
+    - **Webhook Secret** — paste this into GitHub's webhook Secret field
+    - **Webhook ID** — you'll need this when running `/newrepo`
+
+    ![Webhook credentials DM screenshot](/samples/repo/webhook-dm.png)
+
+    <Callout type="warn">
+      Delete the DM after you've saved your credentials elsewhere. Do not share the secret with anyone.
+    </Callout>
+  </Step>
+</Steps>
+
+## Next step
+
+[Register the webhook URL in GitHub →](/docs/getting-started/github-setup)

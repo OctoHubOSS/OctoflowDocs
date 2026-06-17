@@ -1,13 +1,67 @@
 ---
-title: Hello World
-description: Your first document
+title: Introduction
+description: Octoflow is a Discord bot that delivers real-time GitHub webhook notifications to your server.
+icon: Bot
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+## What is Octoflow?
 
-## What is Next?
+Octoflow is a Discord bot that bridges your GitHub repositories to your Discord server. When activity happens in a repository — a push, a pull request, a new issue, a deployment — Octoflow sends a rich notification to the channel of your choosing.
+
+It's built on top of GitHub's webhook system. You point a GitHub webhook at the Octoflow API, tell the bot which repository goes to which channel, and events start flowing.
+
+## Key Concepts
+
+**Webhooks** — An Octoflow webhook is a record that ties your Discord server to the Octoflow API. You create one with `/newhook`, receive a URL and secret, then register that URL in GitHub. One webhook supports multiple repositories. Each guild can have up to **5 webhooks**.
+
+**Repositories** — A repository entry links a GitHub repo to a specific Discord channel within a webhook. When GitHub fires an event for that repo, Octoflow routes it to the configured channel. Run `/newrepo` to add one.
+
+**Event Modifiers** — Fine-grained rules that let you whitelist or blacklist specific GitHub event types, or redirect events to a different channel. Each webhook supports up to **10 event modifiers**.
+
+**Backups** — Export your entire webhook configuration (repos + event modifiers) to a portable JSON file and restore it later with `/restore`.
+
+## Getting Started
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.vercel.app" />
+  <Card
+    title="Invite the Bot"
+    description="Add Octoflow to your Discord server in seconds."
+    href="/docs/getting-started/invite"
+    icon="UserPlus"
+  />
+  <Card
+    title="Create a Webhook"
+    description="Generate your first webhook and get your credentials."
+    href="/docs/getting-started/webhook-setup"
+    icon="Webhook"
+  />
+  <Card
+    title="Connect GitHub"
+    description="Register the webhook URL in your GitHub repository or org."
+    href="/docs/getting-started/github-setup"
+    icon="Github"
+  />
+</Cards>
+
+## Command Reference
+
+<Cards>
+  <Card
+    title="Core Commands"
+    description="Manage webhooks and repositories."
+    href="/docs/commands"
+    icon="Settings"
+  />
+  <Card
+    title="Event Modifiers"
+    description="Filter and redirect events."
+    href="/docs/commands/modifiers"
+    icon="Filter"
+  />
+  <Card
+    title="Backups"
+    description="Export and restore your configuration."
+    href="/docs/commands/backups"
+    icon="HardDrive"
+  />
 </Cards>

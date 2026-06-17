@@ -1,0 +1,13 @@
+{
+  "title": "Core Commands",
+  "icon": "Settings",
+  "pages": [
+    "list",
+    "newhook",
+    "newrepo",
+    "delhook",
+    "delrepo",
+    "setrepochannel",
+    "resetsecret"
+  ]
+}

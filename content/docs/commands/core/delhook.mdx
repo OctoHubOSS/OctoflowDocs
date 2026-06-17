@@ -1,0 +1,40 @@
+---
+title: /delhook
+description: Delete a webhook and all its associated repositories and event modifiers.
+icon: Trash
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Deletes a webhook from the current server. The command does not error if the webhook ID doesn't exist — it silently succeeds either way.
+
+<Callout type="warn">
+  Deleting a webhook also removes all repositories and event modifiers associated with it. This action cannot be undone. Use [`/backup`](/docs/commands/backups/backup) first if you want to preserve your configuration.
+</Callout>
+
+## Usage
+
+```
+/delhook id:abc123
+git!delhook id:abc123
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The webhook ID to delete. Find it with /list.',
+      type: 'string',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).

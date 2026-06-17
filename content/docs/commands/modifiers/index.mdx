@@ -1,0 +1,37 @@
+---
+title: Event Modifiers
+description: Filter and redirect GitHub events on a per-webhook or per-repository basis.
+icon: Filter
+---
+
+Event modifiers let you customize exactly which GitHub events get posted to Discord. You can:
+
+- **Blacklist** events so they are silently dropped
+- **Whitelist** events so only the listed types are delivered (everything else is dropped)
+- **Redirect** specific events to a different channel
+
+Each webhook supports a maximum of **10 event modifiers**. Modifiers are evaluated in priority order (lower number = higher priority).
+
+## How priority works
+
+When an event arrives, Octoflow evaluates your modifiers in ascending priority order. The first modifier whose event list matches the incoming event type is applied. Use priority `0` for most cases; only change it if you need one modifier to fire before another.
+
+## Blacklist vs whitelist
+
+| Mode | Behavior |
+|---|---|
+| **Blacklisted** | Events matching the list are dropped. Everything else passes through. |
+| **Whitelisted** | Only events matching the list are delivered. Everything else is dropped. |
+
+You can set both flags to `false` on a redirect modifier to route specific events to a different channel without blocking or allowing anything else.
+
+<Callout type="warn">
+  When using `redirect_channel`, set both `blacklisted` and `whitelisted` to `false`. Combining redirect with whitelist/blacklist can produce confusing results.
+</Callout>
+
+## Commands
+
+<Cards>
+  <Card title="/eventmod create" description="Create a new event modifier on a webhook." href="/docs/commands/modifiers/create" />
+  <Card title="/eventmod delete" description="Delete an event modifier by ID." href="/docs/commands/modifiers/delete" />
+</Cards>

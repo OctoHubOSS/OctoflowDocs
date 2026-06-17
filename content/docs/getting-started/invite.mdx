@@ -1,0 +1,41 @@
+---
+title: Invite the Bot
+description: Add Octoflow to your Discord server using the official invite link.
+icon: UserPlus
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<Callout type="info">
+  You need **Manage Server** permission in the target Discord server to invite bots.
+</Callout>
+
+<Steps>
+  <Step>
+    ### Visit the invite link
+
+    Go to [gitlogs.xyz/invite](https://gitlogs.xyz/invite). Discord's authorization flow will open.
+  </Step>
+
+  <Step>
+    ### Choose your server
+
+    Select the server you want to add Octoflow to from the **ADD TO SERVER** dropdown, then click **Continue**.
+
+    ![Server selection screenshot](/samples/invite/server-select.png)
+  </Step>
+
+  <Step>
+    ### Review permissions
+
+    <Callout type="warn">
+      We recommend keeping all default permissions enabled. Removing permissions (especially **Send Messages** or **Embed Links**) will break event delivery.
+    </Callout>
+
+    Octoflow requests a minimal set of permissions needed to deliver formatted webhook notifications to your channels. Review them and click **Authorize**.
+
+    ![Permissions selection screenshot](/samples/invite/perms-select.png)
+  </Step>
+</Steps>
+
+Once the bot joins your server, head to [Create a Webhook](/docs/getting-started/webhook-setup) to generate your first webhook.

@@ -1,0 +1,41 @@
+---
+title: /eventmod delete
+description: Delete an event modifier by its ID.
+icon: Trash
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Removes an event modifier. After deletion, events previously matched by that modifier will be handled normally (or by the next matching modifier, if one exists).
+
+## Usage
+
+```
+/eventmod delete modifier_id:MODIFIER_ID
+git!eventmod delete modifier_id:MODIFIER_ID
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    modifier_id: {
+      description: 'The ID of the modifier to delete. This was returned when you ran /eventmod create.',
+      type: 'string',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- Modifier IDs are 256-character alphanumeric strings returned by `/eventmod create`.
+- If the modifier doesn't exist in the current server, the command will error.

@@ -1,0 +1,66 @@
+---
+title: /newhook
+description: Create a new webhook in the current server and receive your webhook URL and secret via DM.
+icon: CirclePlus
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Creates a new webhook and sends your credentials (webhook URL, secret, and ID) via DM so you can register the webhook in GitHub.
+
+<Callout type="warn">
+  Your DMs must be open from server members. If the bot can't DM you, the webhook is created but you won't receive your credentials. In that case, use `/resetsecret` to regenerate and retry.
+</Callout>
+
+## Usage
+
+```
+/newhook comment:"My webhook" broken:false
+git!newhook comment:"My webhook"
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    comment: {
+      description: 'A label for this webhook so you can identify it in /list.',
+      type: 'string',
+      required: true,
+    },
+    broken: {
+      description: 'Mark the webhook as broken immediately. Defaults to false.',
+      type: 'boolean',
+      required: false,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## What the bot DMs you
+
+```
+Next, add the following webhook to your Github repositories (or organizations):
+https://v2.gitlogs.xyz/kittycat?id=WEBHOOK_ID
+
+Set the Secret field to WEBHOOK_SECRET and ensure that Content Type is
+set to application/json.
+
+When creating repositories, use WEBHOOK_ID as the ID.
+```
+
+The DM also includes any configured backup domain URLs to use if the primary API is unreachable.
+
+## Notes
+
+- A maximum of **5 webhooks** are allowed per server. Attempting to create a sixth will fail.
+- The webhook secret is a 256-character random alphanumeric string.
+- Delete the DM after saving your credentials — the secret should not be shared.
+- To later rotate the secret, use [`/resetsecret`](/docs/commands/core/resetsecret).

@@ -1,0 +1,58 @@
+---
+title: /newrepo
+description: Link a GitHub repository to a webhook and choose which channel receives its notifications.
+icon: FolderPlus
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Links a GitHub repository to an existing webhook and routes its events to a specific Discord channel. Each repository entry is independent — you can send different repos to different channels, all under one webhook.
+
+## Usage
+
+```
+/newrepo webhook_id:abc123 owner:octocat name:my-repo channel:#github-events
+git!newrepo webhook_id:abc123 owner:octocat name:my-repo channel:#github-events
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    webhook_id: {
+      description: 'The webhook ID to associate this repo with. Find it using /list.',
+      type: 'string',
+      required: true,
+    },
+    owner: {
+      description: 'The GitHub user or organization name that owns the repository (e.g. octocat).',
+      type: 'string',
+      required: true,
+    },
+    name: {
+      description: 'The repository name (e.g. my-repo). Case-insensitive.',
+      type: 'string',
+      required: true,
+    },
+    channel: {
+      description: 'The Discord channel to send event notifications to.',
+      type: 'channel',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- Repository names are stored in lowercase (`owner/name`). Matching is case-insensitive.
+- If the repository already exists under that webhook, the command will error. Use [`/delrepo`](/docs/commands/core/delrepo) to remove it first.
+- The specified webhook must exist in your server — the command will error if it doesn't.
+- To change the notification channel later, use [`/setrepochannel`](/docs/commands/core/setrepochannel).

@@ -1,0 +1,61 @@
+---
+title: /restore
+description: Restore repositories and event modifiers from a .glb backup file into a webhook.
+icon: Upload
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Restores a webhook configuration from a `.glb` backup file created by [`/backup`](/docs/commands/backups/backup). The command processes repositories first, then event modifiers. Existing entries are updated in-place; new ones are inserted.
+
+## Usage
+
+```
+/restore id:WEBHOOK_ID file:backup.glb
+git!restore id:WEBHOOK_ID file:backup.glb
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The webhook ID to restore the backup into. The webhook must already exist.',
+      type: 'string',
+      required: true,
+    },
+    file: {
+      description: 'The .glb backup file attachment created by /backup.',
+      type: 'attachment',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+None.
+
+## Response
+
+The bot updates its status message as it processes each phase, then posts a summary:
+
+```
+Summary
+
+- Inserted repos: N
+- Updated repos: N
+- Inserted event modifiers: N
+- Updated event modifiers: N
+```
+
+## Notes
+
+- The backup file must be protocol version `2`. Files from older versions will be rejected.
+- The target webhook must already exist in the server — create one with `/newhook` first if needed.
+- Restore is safe to run multiple times. Re-running on the same webhook will update existing entries rather than duplicate them.
+- The backup does not store the webhook secret, so channel IDs from the original server are preserved. If the channel IDs don't exist in the new server, you'll need to update them with [`/setrepochannel`](/docs/commands/core/setrepochannel).

@@ -1,0 +1,9 @@
+{
+  "title": "Event Modifiers",
+  "icon": "Filter",
+  "pages": [
+    "index",
+    "create",
+    "delete"
+  ]
+}

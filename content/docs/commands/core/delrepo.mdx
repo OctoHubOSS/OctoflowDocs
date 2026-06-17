@@ -1,0 +1,41 @@
+---
+title: /delrepo
+description: Remove a repository from a webhook, stopping event delivery for that repo.
+icon: FolderMinus
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Removes a repository entry from a webhook. Events from that repository will no longer be delivered to Discord after this command runs.
+
+## Usage
+
+```
+/delrepo id:REPO_ID
+git!delrepo id:REPO_ID
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The repository ID to delete. Repository IDs are returned when you run /newrepo, or visible via /list.',
+      type: 'string',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- The repository ID is a 32-character alphanumeric string generated when you run `/newrepo`. It is different from the webhook ID.
+- If the repository doesn't exist, the command silently succeeds.

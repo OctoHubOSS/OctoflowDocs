@@ -1,0 +1,9 @@
+{
+  "title": "Backups",
+  "icon": "HardDrive",
+  "pages": [
+    "index",
+    "backup",
+    "restore"
+  ]
+}

@@ -1,0 +1,47 @@
+---
+title: /backup
+description: Export a webhook's repositories and event modifiers to a .glb JSON backup file.
+icon: Save
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Creates a backup of all repositories and event modifiers associated with a webhook and sends the file as a Discord attachment. The file uses the `.glb` extension and contains JSON data at backup protocol version `2`.
+
+## Usage
+
+```
+/backup id:WEBHOOK_ID
+git!backup id:WEBHOOK_ID
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The webhook ID to back up. Find it with /list.',
+      type: 'string',
+      required: true,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+None.
+
+## Response
+
+The bot replies with a message and attaches a file named `WEBHOOK_ID.glb`. Save this file — you'll need it if you ever want to restore.
+
+## Notes
+
+- The backup includes all repositories and event modifiers for the specified webhook.
+- The backup file does **not** include the webhook secret. If you're migrating to a new server, you'll need to run `/newhook` to get new credentials, then `/restore` to repopulate repos and modifiers.
+- Store the backup file securely — it contains channel IDs and repository names.
+- Use [`/restore`](/docs/commands/backups/restore) to apply the backup.

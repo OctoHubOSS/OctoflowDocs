@@ -1,0 +1,90 @@
+---
+title: /eventmod create
+description: Create a new event modifier to filter, whitelist, blacklist, or redirect GitHub events on a webhook.
+icon: CirclePlus
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Creates an event modifier on a webhook. Modifiers let you suppress specific GitHub event types, or redirect them to a different Discord channel.
+
+## Usage
+
+```
+/eventmod create webhook_id:abc123 events:push,pull_request blacklisted:false whitelisted:true priority:0
+git!eventmod create webhook_id:abc123 events:push,pull_request blacklisted:false whitelisted:true
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    webhook_id: {
+      description: 'The webhook ID to attach this modifier to.',
+      type: 'string',
+      required: true,
+    },
+    events: {
+      description: 'Comma or space-separated list of GitHub event names to match (e.g. push,pull_request,issues).',
+      type: 'string',
+      required: true,
+    },
+    blacklisted: {
+      description: 'If true, matching events are dropped silently.',
+      type: 'boolean',
+      required: true,
+    },
+    whitelisted: {
+      description: 'If true, only matching events are delivered — all others are dropped.',
+      type: 'boolean',
+      required: true,
+    },
+    priority: {
+      description: 'Evaluation order. Lower number = evaluated first. Defaults to 0.',
+      type: 'number',
+      required: false,
+    },
+    repo_id: {
+      description: 'Limit this modifier to one specific repository ID. Leave unset to apply to all repos under this webhook.',
+      type: 'string',
+      required: false,
+    },
+    redirect_channel: {
+      description: 'Route matching events to this channel instead of the repository\'s configured channel.',
+      type: 'channel',
+      required: false,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Examples
+
+**Blacklist noisy events** — drop `watch` and `star` events entirely:
+```
+/eventmod create webhook_id:abc123 events:watch,star blacklisted:true whitelisted:false
+```
+
+**Whitelist only CI events** — only deliver workflow and check events:
+```
+/eventmod create webhook_id:abc123 events:workflow_run,workflow_job,check_run,check_suite blacklisted:false whitelisted:true
+```
+
+**Redirect deployments to a separate channel:**
+```
+/eventmod create webhook_id:abc123 events:deployment,deployment_status blacklisted:false whitelisted:false redirect_channel:#deployments
+```
+
+## Notes
+
+- A maximum of **10 event modifiers** are allowed per webhook.
+- Event names must match GitHub's event type identifiers exactly (see the [GitHub Events](/docs/events/github) reference).
+- Backticks, extra commas, and double spaces in the `events` string are stripped automatically.
+- The modifier ID returned by the bot is needed to delete this modifier later.

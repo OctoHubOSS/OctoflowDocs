@@ -1,0 +1,43 @@
+---
+title: Getting Started
+description: Everything you need to go from zero to receiving GitHub events in Discord.
+icon: Hand
+---
+
+Setting up Octoflow takes about five minutes. There are three steps:
+
+1. **Invite the bot** to your Discord server
+2. **Create a webhook** inside Discord using `/newhook`
+3. **Register the webhook URL** in your GitHub repository or organization
+
+After those three steps, run `/newrepo` to link a repository to a channel and events will start flowing immediately.
+
+## Prerequisites
+
+- You need **Manage Server** (`MANAGE_GUILD`) permission in the Discord server you're adding the bot to.
+- You need admin access to the GitHub repository or organization where you're registering the webhook.
+- The bot must be able to **send messages** in the channel you want notifications delivered to.
+- Your **DMs must be open** from server members — the bot sends your webhook credentials via DM.
+
+## Steps
+
+<Cards>
+  <Card
+    title="1. Invite the Bot"
+    description="Add Octoflow to your server using the official invite link."
+    href="/docs/getting-started/invite"
+    icon="UserPlus"
+  />
+  <Card
+    title="2. Create a Webhook"
+    description="Run /newhook to generate your webhook URL and secret."
+    href="/docs/getting-started/webhook-setup"
+    icon="Webhook"
+  />
+  <Card
+    title="3. Connect GitHub"
+    description="Register the webhook URL in your GitHub repository or organization settings."
+    href="/docs/getting-started/github-setup"
+    icon="Github"
+  />
+</Cards>

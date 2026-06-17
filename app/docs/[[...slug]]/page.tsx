@@ -7,6 +7,7 @@ import {
 } from 'fumadocs-ui/page';
 import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { metadataImage } from '@/utils/metadata-image';
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -39,8 +40,19 @@ export async function generateMetadata(props: {
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
-  return {
+  return metadataImage.withImage(page.slugs, {
     title: page.data.title,
     description: page.data.description,
-  };
+    openGraph: {
+      title: page.data.title,
+      description: page.data.description,
+      siteName: 'Octoflow',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: page.data.title,
+      description: page.data.description,
+      creator: '@HeyOctoflow',
+    },
+  });
 }

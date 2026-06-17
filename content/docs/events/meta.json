@@ -1,0 +1,9 @@
+{
+  "title": "GitHub Events",
+  "icon": "Webhook",
+  "pages": [
+    "index",
+    "github",
+    "supported"
+  ]
+}

@@ -1,0 +1,85 @@
+---
+title: All GitHub Events
+description: Complete list of every GitHub webhook event type and whether Octoflow currently supports it.
+icon: List
+---
+
+<Callout type="info">
+  Reference: [GitHub Webhook Events and Payloads](https://docs.github.com/en/webhooks/webhook-events-and-payloads)
+</Callout>
+
+| Event | Description | Supported |
+|---|---|:---:|
+| `branch_protection_configuration` | Branch protection configuration created, updated, or deleted. | ✗ |
+| `branch_protection_rule` | Branch protection rule created, edited, or deleted. | ✓ |
+| `check_run` | Check run created, rerequested, or completed. | ✓ |
+| `check_suite` | Check suite completed, requested, or rerequested. | ✓ |
+| `code_scanning_alert` | Code scanning alert created, fixed, reopened, or closed. | ✗ |
+| `commit_comment` | Comment created, edited, or deleted on a commit. | ✓ |
+| `create` | Branch or tag created. | ✓ |
+| `custom_property` | Custom property created, updated, or deleted. | ✗ |
+| `custom_property_values` | Custom property values created, updated, or deleted. | ✗ |
+| `delete` | Branch or tag deleted. | ✓ |
+| `dependabot_alert` | Dependabot alert created, dismissed, or resolved. | ✓ |
+| `deploy_key` | Deploy key added or removed. | ✗ |
+| `deployment` | Deployment created or updated. | ✓ |
+| `deployment_protection_rule` | Deployment protection rule created, updated, or deleted. | ✗ |
+| `deployment_review` | Deployment review requested, approved, or rejected. | ✗ |
+| `deployment_status` | Status of a deployment changed. | ✓ |
+| `discussion` | Discussion created, edited, deleted, pinned, transferred, answered, or unanswered. | ✓ |
+| `discussion_comment` | Comment created, edited, or deleted in a discussion. | ✓ |
+| `fork` | Repository forked. | ✓ |
+| `github_app_authorization` | GitHub App authorization revoked. | ✗ |
+| `gollum` | Wiki page created or updated. | ✗ |
+| `installation` | GitHub App installed or uninstalled. | ✗ |
+| `installation_repositories` | Repository added or removed from an installation. | ✗ |
+| `installation_target` | Installation target created, updated, or deleted. | ✗ |
+| `issue_comment` | Comment created, edited, or deleted on an issue or pull request. | ✓ |
+| `issues` | Issue opened, edited, closed, reopened, assigned, labeled, locked, transferred, etc. | ✓ |
+| `label` | Label created, edited, or deleted. | ✗ |
+| `marketplace_purchase` | GitHub Marketplace plan purchased, cancelled, or changed. | ✗ |
+| `member` | Collaborator added, removed, or permissions changed. | ✗ |
+| `membership` | User added or removed from a team. | ✗ |
+| `merge_group` | Merge group created, updated, or deleted. | ✗ |
+| `meta` | Webhook configuration updated. | ✗ |
+| `milestone` | Milestone created, closed, opened, edited, or deleted. | ✗ |
+| `org_block` | Organization blocked or unblocked a user. | ✗ |
+| `organization` | Organization created, deleted, renamed, or billing email updated. | ✗ |
+| `package` | Package published or updated. | ✗ |
+| `page_build` | GitHub Pages site built or failed to build. | ✓ |
+| `personal_access_token_request` | Personal access token request created, approved, or denied. | ✗ |
+| `ping` | Ping sent to test the webhook configuration. | ✗ |
+| `project_card` | Project card created, updated, moved, converted, or deleted. | ✗ |
+| `project` | Project created, updated, closed, reopened, or deleted. | ✗ |
+| `project_column` | Project column created, updated, moved, or deleted. | ✗ |
+| `projects_v2` | Projects v2 project created, updated, or deleted. | ✗ |
+| `projects_v2_item` | Projects v2 item created, updated, or deleted. | ✗ |
+| `projects_v2_status_update` | Projects v2 status update created, updated, or deleted. | ✗ |
+| `public` | Private repository made public. | ✓ |
+| `pull_request` | Pull request opened, edited, closed, reopened, assigned, labeled, locked, synchronized, etc. | ✓ |
+| `pull_request_review` | Pull request review submitted, edited, or dismissed. | ✓ |
+| `pull_request_review_comment` | Comment created, edited, or deleted on a pull request review. | ✓ |
+| `pull_request_review_thread` | Pull request review thread resolved or unresolved. | ✗ |
+| `push` | Commits pushed to a branch or tag. | ✓ |
+| `registry_package` | Registry package published or updated. | ✗ |
+| `release` | Release published, unpublished, created, edited, deleted, or prereleased. | ✓ |
+| `repository` | Repository created, deleted, archived, unarchived, publicized, or privatized. | ✓ |
+| `repository_advisory` | Repository advisory created, updated, or deleted. | ✗ |
+| `repository_dispatch` | Repository dispatch event triggered. | ✗ |
+| `repository_import` | Repository import started, completed, or failed. | ✗ |
+| `repository_ruleset` | Repository ruleset created, updated, or deleted. | ✗ |
+| `repository_vulnerability_alert` | Repository vulnerability alert created, dismissed, or resolved. | ✗ |
+| `secret_scanning_alert` | Secret scanning alert created, resolved, or reopened. | ✗ |
+| `secret_scanning_alert_location` | Secret scanning alert location created, updated, or deleted. | ✗ |
+| `security_advisory` | Security advisory published, updated, or withdrawn. | ✗ |
+| `security_and_analysis` | Security and analysis features enabled or disabled. | ✗ |
+| `sponsorship` | Sponsorship created, updated, or cancelled. | ✗ |
+| `star` | Repository starred or unstarred. | ✓ |
+| `status` | Status of a Git commit changed. | ✓ |
+| `sub_issues` | Sub-issues created, updated, or deleted. | ✗ |
+| `team_add` | Repository added to a team. | ✗ |
+| `team` | Team created, updated, or deleted. | ✓ |
+| `watch` | Repository starred (watch event). | ✓ |
+| `workflow_dispatch` | Workflow dispatch event triggered. | ✗ |
+| `workflow_job` | GitHub Actions workflow job queued, started, or completed. | ✓ |
+| `workflow_run` | GitHub Actions workflow run requested or completed. | ✓ |

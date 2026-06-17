@@ -1,0 +1,44 @@
+---
+title: Backups
+description: Export and restore your webhook configuration using Octoflow's built-in backup system.
+icon: HardDrive
+---
+
+Octoflow can export a full snapshot of a webhook's configuration — all its repositories and event modifiers — to a JSON file. You can restore from that file at any time.
+
+## Backup file format
+
+Backup files use the `.glb` extension and contain JSON with the following structure:
+
+```json
+{
+  "protocol": 2,
+  "repos": [
+    {
+      "repo_id": "...",
+      "repo_name": "owner/repo",
+      "channel_id": "..."
+    }
+  ],
+  "event_modifiers": [
+    {
+      "event_modifier_id": "...",
+      "repo_id": null,
+      "events": ["push", "pull_request"],
+      "blacklisted": false,
+      "whitelisted": true,
+      "redirect_channel": null,
+      "priority": 0
+    }
+  ]
+}
+```
+
+The `protocol` field is currently `2`. Restoring a backup with a different protocol version will fail with an error — contact support if this happens.
+
+## Commands
+
+<Cards>
+  <Card title="/backup" description="Export a webhook to a .glb backup file." href="/docs/commands/backups/backup" />
+  <Card title="/restore" description="Restore a webhook from a .glb backup file." href="/docs/commands/backups/restore" />
+</Cards>

@@ -1,0 +1,47 @@
+---
+title: GitHub Events
+description: Learn how GitHub webhook events work with Octoflow and what events are supported.
+icon: Webhook
+---
+
+GitHub webhook events are HTTP POST requests that GitHub sends to a URL you specify whenever activity happens in a repository or organization. Octoflow receives these requests, verifies the HMAC signature using your webhook secret, and routes the event to the correct Discord channel.
+
+## How events flow
+
+```
+GitHub repo activity
+      ↓
+GitHub sends POST to https://v2.gitlogs.xyz/kittycat?id=WEBHOOK_ID
+      ↓
+Octoflow API verifies signature
+      ↓
+Octoflow evaluates event modifiers (blacklists/whitelists/redirects)
+      ↓
+Discord channel receives formatted embed
+```
+
+## Choosing which events to receive
+
+When you register a webhook in GitHub, you choose which events to send:
+
+- **Send me everything** — GitHub sends all event types. Octoflow will deliver everything unless you've set up [event modifiers](/docs/commands/modifiers) to filter specific types.
+- **Let me select individual events** — GitHub only sends the types you tick. Use this for a minimal setup where you know exactly what you want.
+
+We recommend **Send me everything** combined with event modifier blacklists for maximum flexibility — you can add or remove filters without touching GitHub settings.
+
+## Reference
+
+<Cards>
+  <Card
+    title="All GitHub Events"
+    description="Complete list of every event type available via the GitHub API, with support status."
+    href="/docs/events/github"
+    icon="List"
+  />
+  <Card
+    title="Supported Events"
+    description="Events that Octoflow currently processes and delivers."
+    href="/docs/events/supported"
+    icon="ListCheck"
+  />
+</Cards>
