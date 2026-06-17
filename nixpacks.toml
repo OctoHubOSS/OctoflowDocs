@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ["bun", "nodejs_24"]
+includeNode = false
+
+[phases.build]
+cmds = ["bun install --frozen-lockfile", "bun run build"]
+
+[start]
+cmd = "bun run preview"
