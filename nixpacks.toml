@@ -6,4 +6,4 @@ includeNode = false
 cmds = ["bun install --frozen-lockfile", "bun run build"]
 
 [start]
-cmd = "bun run preview"
+cmd = "bun start"
