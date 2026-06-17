@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { BookOpen, Heart } from 'lucide-react';
 import { SiGithub, SiDiscord } from 'react-icons/si';
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import { MdAutoGraph } from "react-icons/md";
 import { BsTwitter } from 'react-icons/bs';
 
 export const baseOptions: BaseLayoutProps = {
@@ -20,6 +21,13 @@ export const baseOptions: BaseLayoutProps = {
       text: 'Documentation',
       url: '/docs',
       active: 'nested-url',
+    },
+    {
+      icon: <MdAutoGraph />,
+      text: 'Status',
+      url: 'https://status.octoflow.ca',
+      active: 'nested-url',
+      external: true,
     },
     {
       type: 'icon',
