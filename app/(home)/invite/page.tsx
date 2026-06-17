@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
 };
 
-const INVITE_URL = 'https://gitlogs.xyz/invite';
+const INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=913266703398473810';
 
 const permissions = [
   {
