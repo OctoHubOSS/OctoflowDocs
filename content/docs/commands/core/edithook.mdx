@@ -1,0 +1,55 @@
+---
+title: /edithook
+description: Edit a webhook's comment, broken flag, or secret without recreating it.
+icon: Pencil
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Updates one or more fields on an existing webhook. Only the fields you provide are changed — anything left unset is untouched.
+
+## Usage
+
+```
+/edithook id:WEBHOOK_ID comment:"Renamed webhook"
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The webhook ID to edit. Find it with /list.',
+      type: 'string',
+      required: true,
+    },
+    comment: {
+      description: 'A new label for this webhook.',
+      type: 'string',
+      required: false,
+    },
+    broken: {
+      description: 'Mark the webhook as broken or not.',
+      type: 'boolean',
+      required: false,
+    },
+    webhook_secret: {
+      description: 'Set a new signing secret directly, instead of generating a random one.',
+      type: 'string',
+      required: false,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- If you set `webhook_secret`, you must also update the **Secret** field in your GitHub webhook settings — GitHub will reject events signed with the old secret until you do. Prefer [`/resetsecret`](/docs/commands/core/resetsecret) if you just want a fresh random secret DMed to you.
+- The command errors if the webhook doesn't exist in the current server.

@@ -99,6 +99,8 @@ Events will start flowing immediately after this command succeeds.
 
 ## Troubleshooting
 
-- **206 status from GitHub delivery** — This means the webhook URL doesn't include the `repo_url` parameter. Make sure your Payload URL ends with `?id=YOUR_WEBHOOK_ID`.
+- **206 status from GitHub delivery** — This means the repository sending the event hasn't been linked to this webhook yet. Run [`/newrepo`](/docs/getting-started/github-setup#step-2-link-a-repository-in-the-bot) with the exact owner/name of the repository that's failing.
 - **Bot not responding** — Check that the bot has **Send Messages** and **Embed Links** permissions in the target channel.
 - **No events appearing** — Confirm GitHub is delivering successfully by checking the **Recent Deliveries** tab on the webhook settings page.
+
+For deeper diagnostics — including a live dump of your webhook's config and per-event audit logs — see [Debugging Webhooks](/docs/getting-started/debugging).

@@ -10,11 +10,11 @@ Event modifiers let you customize exactly which GitHub events get posted to Disc
 - **Whitelist** events so only the listed types are delivered (everything else is dropped)
 - **Redirect** specific events to a different channel
 
-Each webhook supports a maximum of **10 event modifiers**. Modifiers are evaluated in priority order (lower number = higher priority).
+Each webhook supports a maximum of **10 event modifiers**. Modifiers are evaluated in priority order (higher number = higher priority).
 
 ## How priority works
 
-When an event arrives, Octoflow evaluates your modifiers in ascending priority order. The first modifier whose event list matches the incoming event type is applied. Use priority `0` for most cases; only change it if you need one modifier to fire before another.
+When an event arrives, Octoflow evaluates your modifiers in descending priority order. The first modifier whose event list matches the incoming event type is applied. Use priority `0` for most cases; raise it on a modifier if you need it to fire before others.
 
 ## Blacklist vs whitelist
 
@@ -29,9 +29,20 @@ You can set both flags to `false` on a redirect modifier to route specific event
   When using `redirect_channel`, set both `blacklisted` and `whitelisted` to `false`. Combining redirect with whitelist/blacklist can produce confusing results.
 </Callout>
 
+## Wildcard matching
+
+Event names in the `events` list support two wildcard characters, so a single modifier can match a whole family of events:
+
+- `*` matches zero or more characters
+- `?` matches exactly one character
+
+For example, `events:workflow_*` matches both `workflow_run` and `workflow_job`, and `events:pull_request*` matches `pull_request`, `pull_request_review_comment`, and any other event starting with `pull_request`.
+
 ## Commands
 
 <Cards>
   <Card title="/eventmod create" description="Create a new event modifier on a webhook." href="/docs/commands/modifiers/create" />
+  <Card title="/eventmod edit" description="Change an existing event modifier's settings." href="/docs/commands/modifiers/edit" />
+  <Card title="/eventmod list" description="List event modifiers in the server." href="/docs/commands/modifiers/list" />
   <Card title="/eventmod delete" description="Delete an event modifier by ID." href="/docs/commands/modifiers/delete" />
 </Cards>

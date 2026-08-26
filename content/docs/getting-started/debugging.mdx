@@ -1,0 +1,53 @@
+---
+title: Debugging Webhooks
+description: Self-serve tools for diagnosing why events aren't showing up in Discord.
+icon: Bug
+---
+
+Octoflow's API exposes a few plain-text endpoints you can open directly in a browser to diagnose a webhook without needing GitHub's delivery logs or bot commands.
+
+## Webhook diagnostic view
+
+```
+GET https://v2.gitlogs.xyz/kittycat?id=YOUR_WEBHOOK_ID
+```
+
+Visiting your webhook's URL directly (instead of having GitHub POST to it) returns a plain-text dump of everything Octoflow knows about that webhook:
+
+- Whether it's marked **broken**, and its comment
+- Every event modifier attached to it (ID, event list, blacklist/whitelist flags, redirect channel, priority)
+- Every repository linked to it (repo name, repo ID, channel ID, when it was linked)
+
+This is the fastest way to confirm a repository is actually linked, or that an event modifier looks the way you expect, without running `/list` or `/eventmod` commands.
+
+<Callout type="warn">
+  This page is unauthenticated — anyone with your webhook ID can view this info (though not your secret). Don't share your webhook ID publicly.
+</Callout>
+
+## Per-event audit logs
+
+Every event Octoflow accepts and processes gets a log ID. The response to GitHub's delivery (visible in GitHub's **Recent Deliveries** tab) includes a line like:
+
+```
+View logs at: https://v2.gitlogs.xyz/audit?log_id=LOG_ID
+```
+
+Opening that URL shows a step-by-step trace of how that specific event was handled — ACL/event-modifier checks, channel resolution, and the result of sending to Discord. Use this when an event shows up in GitHub's delivery log as successful but never appears in Discord.
+
+## Public status endpoints
+
+<Callout type="info">
+  These endpoints are informational and may change without notice.
+</Callout>
+
+| Endpoint | Returns |
+|---|---|
+| `/api/counts` | Guild, user, and shard counts, comma-separated. |
+| `/api/events/listview` | Human-readable list of currently supported GitHub event types. |
+| `/api/events/csview` | Same list, as a comma-separated machine-readable string. |
+
+## Common statuses
+
+- **206 (Partial Content)** on delivery — the repository named in the payload hasn't been linked to this webhook. Run [`/newrepo`](/docs/commands/core/newrepo) with the exact owner/name.
+- **401 (Unauthorized)** — the HMAC signature didn't match. Double check the **Secret** field in GitHub matches the value from your DM, and that you didn't paste the webhook ID into the secret field by mistake.
+- **500 (Internal Server Error)** — the webhook is marked `broken` (see `/newhook`'s `broken` parameter, or contact support if you didn't set this).

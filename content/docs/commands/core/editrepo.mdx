@@ -1,0 +1,51 @@
+---
+title: /editrepo
+description: Change a linked repository's name or notification channel without deleting and recreating it.
+icon: FolderPen
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Updates a repository entry's name and/or channel. Only the fields you provide are changed.
+
+## Usage
+
+```
+/editrepo id:REPO_ID repo_name:octocat/renamed-repo channel:#new-channel
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    id: {
+      description: 'The repository ID to edit. Find it with /list.',
+      type: 'string',
+      required: true,
+    },
+    repo_name: {
+      description: 'The new owner/name for this repository entry (e.g. octocat/Hello-World). Stored lowercase.',
+      type: 'string',
+      required: false,
+    },
+    channel: {
+      description: 'The new channel to deliver this repository\'s events to.',
+      type: 'channel',
+      required: false,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- Use this when a repository is renamed or transferred on GitHub, so events keep matching without deleting and recreating the entry.
+- To only change the channel, use [`/setrepochannel`](/docs/commands/core/setrepochannel) — `/editrepo` can do the same, plus rename.
+- The command errors if the repo doesn't exist in the current server.

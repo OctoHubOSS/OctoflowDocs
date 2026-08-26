@@ -1,0 +1,41 @@
+---
+title: /eventmod list
+description: List all event modifiers in the current server, optionally filtered to one webhook.
+icon: List
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Shows every event modifier configured in this server, with its ID, webhook, repo scope, priority, type, redirect channel, and matched events.
+
+## Usage
+
+```
+/eventmod list
+/eventmod list webhook_id:abc123
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    webhook_id: {
+      description: 'Only show modifiers attached to this webhook. Leave unset to list every modifier in the server.',
+      type: 'string',
+      required: false,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+None.
+
+## Notes
+
+- Modifiers are listed in the same order they're evaluated in (descending priority) — see [Event Modifiers](/docs/commands/modifiers#how-priority-works).
+- Use the modifier ID shown here with [`/eventmod edit`](/docs/commands/modifiers/edit) or [`/eventmod delete`](/docs/commands/modifiers/delete).

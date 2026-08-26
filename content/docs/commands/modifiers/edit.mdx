@@ -1,0 +1,72 @@
+---
+title: /eventmod edit
+description: Change an existing event modifier's events, flags, priority, repo scope, or redirect channel.
+icon: Pencil
+---
+
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+Updates one or more fields on an existing event modifier. Only the fields you provide are changed — this saves recreating the modifier (and losing its ID) just to tweak one setting.
+
+## Usage
+
+```
+/eventmod edit modifier_id:abc123 priority:5
+/eventmod edit modifier_id:abc123 events:push,pull_request repo_id:none
+```
+
+## Parameters
+
+<TypeTable
+  type={{
+    modifier_id: {
+      description: 'The ID of the modifier to edit. Find it with /eventmod list.',
+      type: 'string',
+      required: true,
+    },
+    events: {
+      description: 'Replaces the full event list. Comma or space-separated, same wildcard rules as /eventmod create.',
+      type: 'string',
+      required: false,
+    },
+    blacklisted: {
+      description: 'Replaces the blacklist flag.',
+      type: 'boolean',
+      required: false,
+    },
+    whitelisted: {
+      description: 'Replaces the whitelist flag.',
+      type: 'boolean',
+      required: false,
+    },
+    priority: {
+      description: 'Replaces the evaluation priority.',
+      type: 'number',
+      required: false,
+    },
+    repo_id: {
+      description: 'Replaces the repo scope. Pass "none" to clear it and match all repos again.',
+      type: 'string',
+      required: false,
+    },
+    redirect_channel: {
+      description: 'Replaces the redirect channel.',
+      type: 'channel',
+      required: false,
+    },
+  }}
+/>
+
+## Permissions
+
+Requires **Manage Server** (`MANAGE_GUILD`).
+
+## Cooldown
+
+60 seconds (per guild).
+
+## Notes
+
+- `events` replaces the entire list — there's no way to add or remove a single event without resending the full set.
+- If you set `repo_id` to a new value, it's checked against the modifier's existing webhook, same as in `/eventmod create`.
+- The command errors if the modifier doesn't exist in the current server.

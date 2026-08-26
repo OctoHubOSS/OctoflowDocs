@@ -12,7 +12,6 @@ Creates an event modifier on a webhook. Modifiers let you suppress specific GitH
 
 ```
 /eventmod create webhook_id:abc123 events:push,pull_request blacklisted:false whitelisted:true priority:0
-git!eventmod create webhook_id:abc123 events:push,pull_request blacklisted:false whitelisted:true
 ```
 
 ## Parameters
@@ -40,7 +39,7 @@ git!eventmod create webhook_id:abc123 events:push,pull_request blacklisted:false
       required: true,
     },
     priority: {
-      description: 'Evaluation order. Lower number = evaluated first. Defaults to 0.',
+      description: 'Evaluation order. Higher number = evaluated first. Defaults to 0.',
       type: 'number',
       required: false,
     },
@@ -85,6 +84,7 @@ Requires **Manage Server** (`MANAGE_GUILD`).
 ## Notes
 
 - A maximum of **10 event modifiers** are allowed per webhook.
-- Event names must match GitHub's event type identifiers exactly (see the [GitHub Events](/docs/events/github) reference).
+- Event names must match GitHub's event type identifiers (see the [GitHub Events](/docs/events/github) reference), but `*` (zero or more characters) and `?` (exactly one character) can be used as wildcards — e.g. `workflow_*` matches both `workflow_run` and `workflow_job`.
 - Backticks, extra commas, and double spaces in the `events` string are stripped automatically.
 - The modifier ID returned by the bot is needed to delete this modifier later.
+- Modifiers are evaluated in descending priority order (higher number fires first); see [Event Modifiers](/docs/commands/modifiers#how-priority-works) for details.

@@ -25,9 +25,8 @@ export const baseOptions: BaseLayoutProps = {
     {
       icon: <MdAutoGraph />,
       text: 'Status',
-      url: 'https://status.octoflow.ca',
-      active: 'nested-url',
-      external: true,
+      url: '/status',
+      active: 'url',
     },
     {
       type: 'icon',

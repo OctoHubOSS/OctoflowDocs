@@ -4,9 +4,9 @@ description: All Octoflow bot commands, organized by category.
 icon: Terminal
 ---
 
-Every command is available as both a Discord slash command (`/command`) and a prefix command (`git!command`).
+Every command is a Discord slash command (`/command`). There is no prefix command anymore — older messages mentioning a `git!` prefix are out of date.
 
-Most commands require the **Manage Server** (`MANAGE_GUILD`) permission and are guild-only.
+Most commands require the **Manage Server** (`MANAGE_GUILD`) permission and are guild-only. [`/restore`](/docs/commands/backups/restore) is a notable exception — see its page for details.
 
 ## Core
 
@@ -15,7 +15,9 @@ Manage webhooks and repositories.
 <Cards>
   <Card title="/list" description="List all webhooks in the server." href="/docs/commands/core/list" />
   <Card title="/newhook" description="Create a new webhook." href="/docs/commands/core/newhook" />
+  <Card title="/edithook" description="Edit a webhook's comment, broken flag, or secret." href="/docs/commands/core/edithook" />
   <Card title="/newrepo" description="Link a repository to a webhook." href="/docs/commands/core/newrepo" />
+  <Card title="/editrepo" description="Rename a linked repository or change its channel." href="/docs/commands/core/editrepo" />
   <Card title="/delhook" description="Delete a webhook." href="/docs/commands/core/delhook" />
   <Card title="/delrepo" description="Delete a repository." href="/docs/commands/core/delrepo" />
   <Card title="/setrepochannel" description="Change a repository's notification channel." href="/docs/commands/core/setrepochannel" />
@@ -28,6 +30,8 @@ Filter, redirect, or suppress specific GitHub event types.
 
 <Cards>
   <Card title="/eventmod create" description="Create an event modifier on a webhook." href="/docs/commands/modifiers/create" />
+  <Card title="/eventmod edit" description="Change an existing event modifier's settings." href="/docs/commands/modifiers/edit" />
+  <Card title="/eventmod list" description="List event modifiers in the server." href="/docs/commands/modifiers/list" />
   <Card title="/eventmod delete" description="Delete an event modifier by ID." href="/docs/commands/modifiers/delete" />
 </Cards>
 

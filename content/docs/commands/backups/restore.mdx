@@ -12,7 +12,6 @@ Restores a webhook configuration from a `.glb` backup file created by [`/backup`
 
 ```
 /restore id:WEBHOOK_ID file:backup.glb
-git!restore id:WEBHOOK_ID file:backup.glb
 ```
 
 ## Parameters
@@ -34,7 +33,11 @@ git!restore id:WEBHOOK_ID file:backup.glb
 
 ## Permissions
 
-Requires **Manage Server** (`MANAGE_GUILD`).
+Guild-only — unlike most other commands, this one does **not** require Manage Server. Any member of the server can run `/restore`.
+
+<Callout type="warn">
+  Because no permission is required, anyone in the server can overwrite a webhook's repos and event modifiers by restoring a `.glb` file. Treat backup files as sensitive and only share them with people you trust.
+</Callout>
 
 ## Cooldown
 

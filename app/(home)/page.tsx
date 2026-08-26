@@ -17,7 +17,24 @@ export default function HomePage() {
       <Hero />
       <Features />
       <QuickStart />
+      <Footer />
     </main>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-fd-border px-4 py-8">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-fd-muted-foreground">
+        <span>&copy; {new Date().getFullYear()} NodeByte LTD. Not affiliated with Discord or GitHub.</span>
+        <div className="flex items-center gap-4">
+          <Link href="/status" className="hover:text-fd-foreground transition-colors">Status</Link>
+          <Link href="/stats" className="hover:text-fd-foreground transition-colors">Stats</Link>
+          <Link href="/terms" className="hover:text-fd-foreground transition-colors">Terms</Link>
+          <Link href="/privacy" className="hover:text-fd-foreground transition-colors">Privacy</Link>
+        </div>
+      </div>
+    </footer>
   );
 }
 
@@ -111,7 +128,7 @@ const features = [
     icon: Bell,
     title: 'Real-time Notifications',
     description:
-      'Receive instant Discord messages the moment something happens in your GitHub repository — no polling, no delays.',
+      'Receive instant Discord messages the moment something happens in your GitHub repository no polling, no delays.',
   },
   {
     icon: Filter,
@@ -135,7 +152,7 @@ const features = [
     icon: HardDrive,
     title: 'Backup & Restore',
     description:
-      'Export your webhook configuration as a JSON file and restore it at any time — perfect for migrations.',
+      'Export your webhook configuration as a JSON file and restore it at any time perfect for migrations.',
   },
   {
     icon: Code2,

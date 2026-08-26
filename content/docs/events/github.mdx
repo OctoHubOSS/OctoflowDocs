@@ -30,25 +30,25 @@ icon: List
 | `discussion_comment` | Comment created, edited, or deleted in a discussion. | ✓ |
 | `fork` | Repository forked. | ✓ |
 | `github_app_authorization` | GitHub App authorization revoked. | ✗ |
-| `gollum` | Wiki page created or updated. | ✗ |
+| `gollum` | Wiki page created or updated. | ✓ |
 | `installation` | GitHub App installed or uninstalled. | ✗ |
 | `installation_repositories` | Repository added or removed from an installation. | ✗ |
 | `installation_target` | Installation target created, updated, or deleted. | ✗ |
 | `issue_comment` | Comment created, edited, or deleted on an issue or pull request. | ✓ |
 | `issues` | Issue opened, edited, closed, reopened, assigned, labeled, locked, transferred, etc. | ✓ |
-| `label` | Label created, edited, or deleted. | ✗ |
+| `label` | Label created, edited, or deleted. | ✓ |
 | `marketplace_purchase` | GitHub Marketplace plan purchased, cancelled, or changed. | ✗ |
-| `member` | Collaborator added, removed, or permissions changed. | ✗ |
-| `membership` | User added or removed from a team. | ✗ |
+| `member` | Collaborator added, removed, or permissions changed. | ✓ |
+| `membership` | User added or removed from a team. | ✓ |
 | `merge_group` | Merge group created, updated, or deleted. | ✗ |
 | `meta` | Webhook configuration updated. | ✗ |
-| `milestone` | Milestone created, closed, opened, edited, or deleted. | ✗ |
+| `milestone` | Milestone created, closed, opened, edited, or deleted. | ✓ |
 | `org_block` | Organization blocked or unblocked a user. | ✗ |
 | `organization` | Organization created, deleted, renamed, or billing email updated. | ✗ |
 | `package` | Package published or updated. | ✗ |
 | `page_build` | GitHub Pages site built or failed to build. | ✓ |
 | `personal_access_token_request` | Personal access token request created, approved, or denied. | ✗ |
-| `ping` | Ping sent to test the webhook configuration. | ✗ |
+| `ping` | Ping sent to test the webhook configuration. | ✓\* |
 | `project_card` | Project card created, updated, moved, converted, or deleted. | ✗ |
 | `project` | Project created, updated, closed, reopened, or deleted. | ✗ |
 | `project_column` | Project column created, updated, moved, or deleted. | ✗ |
@@ -77,9 +77,11 @@ icon: List
 | `star` | Repository starred or unstarred. | ✓ |
 | `status` | Status of a Git commit changed. | ✓ |
 | `sub_issues` | Sub-issues created, updated, or deleted. | ✗ |
-| `team_add` | Repository added to a team. | ✗ |
+| `team_add` | Repository added to a team. | ✓ |
 | `team` | Team created, updated, or deleted. | ✓ |
 | `watch` | Repository starred (watch event). | ✓ |
-| `workflow_dispatch` | Workflow dispatch event triggered. | ✗ |
+| `workflow_dispatch` | Workflow dispatch event triggered. | ✓ |
 | `workflow_job` | GitHub Actions workflow job queued, started, or completed. | ✓ |
 | `workflow_run` | GitHub Actions workflow run requested or completed. | ✓ |
+
+\* `ping` is intercepted before it ever reaches the event pipeline — Octoflow just replies `pong` to confirm the webhook is reachable. It never produces a Discord embed, even though a handler for it exists internally.

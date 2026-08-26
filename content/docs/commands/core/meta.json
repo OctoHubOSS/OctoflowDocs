@@ -4,7 +4,9 @@
   "pages": [
     "list",
     "newhook",
+    "edithook",
     "newrepo",
+    "editrepo",
     "delhook",
     "delrepo",
     "setrepochannel",

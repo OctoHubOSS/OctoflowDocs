@@ -4,6 +4,8 @@
   "pages": [
     "index",
     "create",
-    "delete"
+    "edit",
+    "delete",
+    "list"
   ]
 }

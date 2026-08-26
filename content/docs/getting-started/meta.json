@@ -5,6 +5,7 @@
     "index",
     "invite",
     "webhook-setup",
-    "github-setup"
+    "github-setup",
+    "debugging"
   ]
 }
