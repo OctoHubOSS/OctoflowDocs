@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { consumeOAuthStateCookie, createSessionCookie, type SessionGuild } from '@/lib/session';
+import { siteOrigin } from '@/lib/site';
 
 const MANAGE_GUILD = 0x20;
 
@@ -23,18 +24,19 @@ function hasManageGuild(permissions: string): boolean {
 }
 
 export async function GET(req: NextRequest) {
+  const origin = siteOrigin(req.url);
   const { searchParams } = new URL(req.url);
   const code = searchParams.get('code');
   const state = searchParams.get('state');
   const error = searchParams.get('error');
 
   if (error) {
-    return NextResponse.redirect(new URL('/dashboard?error=access_denied', req.url));
+    return NextResponse.redirect(new URL('/dashboard?error=access_denied', origin));
   }
 
   const expectedState = await consumeOAuthStateCookie();
   if (!code || !state || !expectedState || state !== expectedState) {
-    return NextResponse.redirect(new URL('/dashboard?error=invalid_state', req.url));
+    return NextResponse.redirect(new URL('/dashboard?error=invalid_state', origin));
   }
 
   const clientId = process.env.DISCORD_CLIENT_ID;
@@ -61,7 +63,7 @@ export async function GET(req: NextRequest) {
   });
 
   if (!tokenRes.ok) {
-    return NextResponse.redirect(new URL('/dashboard?error=token_exchange_failed', req.url));
+    return NextResponse.redirect(new URL('/dashboard?error=token_exchange_failed', origin));
   }
 
   const { access_token: accessToken } = (await tokenRes.json()) as { access_token: string };
@@ -76,7 +78,7 @@ export async function GET(req: NextRequest) {
   ]);
 
   if (!userRes.ok || !guildsRes.ok) {
-    return NextResponse.redirect(new URL('/dashboard?error=profile_fetch_failed', req.url));
+    return NextResponse.redirect(new URL('/dashboard?error=profile_fetch_failed', origin));
   }
 
   const user = (await userRes.json()) as DiscordUser;
@@ -93,5 +95,5 @@ export async function GET(req: NextRequest) {
     guilds: manageable,
   });
 
-  return NextResponse.redirect(new URL('/dashboard', req.url));
+  return NextResponse.redirect(new URL('/dashboard', origin));
 }
