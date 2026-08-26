@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { BookOpen, Heart } from 'lucide-react';
+import { BookOpen, Heart, LayoutDashboard } from 'lucide-react';
 import { SiGithub, SiDiscord } from 'react-icons/si';
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { MdAutoGraph } from "react-icons/md";
@@ -20,6 +20,12 @@ export const baseOptions: BaseLayoutProps = {
       icon: <BookOpen />,
       text: 'Documentation',
       url: '/docs',
+      active: 'nested-url',
+    },
+    {
+      icon: <LayoutDashboard />,
+      text: 'Dashboard',
+      url: '/dashboard',
       active: 'nested-url',
     },
     {
