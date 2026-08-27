@@ -14,9 +14,6 @@ export interface DayUptime {
   uptime_percent: number;
   avg_latency_ms: number;
   checks: number;
-  // Set only on days that came from the external checker, i.e. the internal
-  // (Postgres-backed) history had a gap there — see lib/api.ts's
-  // getStatusHistory for why gaps happen and how this fills them.
   source?: 'external';
 }
 
@@ -34,11 +31,31 @@ export function getHealth(): Promise<HealthResponse | null> {
   return safeFetchJson<HealthResponse>(`${API_URL}/api/health`);
 }
 
+export interface PublicStats {
+  total_webhooks: number;
+  total_repos: number;
+  events_last_24h: number;
+  events_last_7d: number;
+  events_last_30d: number;
+  events_all_time: number;
+  guild_count: number;
+  member_count: number;
+  shard_count: number;
+}
+
+// Pure-aggregate totals, no guild-identifying data - safe to expose with no
+// auth, same trust level as getHealth(). Separate from the admin panel's
+// stats, which also carries banned/broken counts meant for operators only.
+export function getPublicStats(): Promise<PublicStats | null> {
+  return safeFetchJson<PublicStats>(`${API_URL}/api/stats/summary`);
+}
+
 function getInternalStatusHistory(days = 90): Promise<DayUptime[] | null> {
   return safeFetchJson<DayUptime[]>(`${API_URL}/api/status/history?days=${days}`);
 }
 
 const EXTERNAL_HISTORY_URL =
+  process.env.EXTERNAL_STATUS_HISTORY_URL ??
   'https://raw.githubusercontent.com/OctoHubOSS/Octoflow/main/status-history.ndjson';
 
 interface ExternalCheck {
@@ -49,14 +66,6 @@ interface ExternalCheck {
   latency_ms: number;
 }
 
-// The external checker (a GitHub Actions cron job, see
-// .github/workflows/external-status-check.yml in the bot repo) hits
-// /api/health from outside our own infrastructure and commits one line per
-// check to a plain file in the repo. It exists specifically because the
-// internal snapshotter shares a failure domain with the thing it's
-// checking — see the plan notes / CHANGELOG for the full reasoning. This
-// aggregates its raw per-check lines into the same per-day shape the Go
-// backend produces, so the two sources are interchangeable in the UI.
 async function getExternalStatusHistory(days: number): Promise<DayUptime[] | null> {
   let text: string;
   try {
@@ -102,10 +111,6 @@ async function getExternalStatusHistory(days: number): Promise<DayUptime[] | nul
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-// Prefers the internal (Postgres-backed, higher-resolution) history for any
-// day it actually has data for. Falls back to the external checker's view of
-// that same day only when the internal snapshotter missed it entirely — the
-// exact gap-filling this dual-source setup exists for.
 export async function getStatusHistory(days = 90): Promise<DayUptime[] | null> {
   const [internal, external] = await Promise.all([
     getInternalStatusHistory(days),
@@ -126,6 +131,7 @@ export interface DashboardRepo {
   repo_name: string;
   channel_id: string;
   channel_name?: string;
+  use_threads: boolean;
 }
 
 export interface DashboardModifier {
@@ -143,6 +149,7 @@ export interface DashboardWebhook {
   id: string;
   comment: string;
   broken: boolean;
+  batch_events: boolean;
   created_at: string;
   repos: DashboardRepo[];
   event_modifiers: DashboardModifier[];
@@ -154,16 +161,27 @@ export interface DashboardChannel {
   type: number;
 }
 
+export interface AnalyticsDay {
+  date: string;
+  count: number;
+}
+
+export interface AnalyticsEventType {
+  event_type: string;
+  count: number;
+}
+
+export interface AnalyticsResponse {
+  per_day: AnalyticsDay[];
+  by_type: AnalyticsEventType[];
+}
+
 export type ApiResult<T> = { ok: true; data: T } | { ok: false; error: string };
 
 function internalSecret(): string | null {
   return process.env.DASHBOARD_INTERNAL_SECRET ?? null;
 }
 
-// Server-to-server only — the internal secret never reaches the browser.
-// The caller (a dashboard page or server action) is responsible for having
-// already verified, via the session cookie, that the logged-in Discord user
-// actually manages the target guild before calling any of these.
 async function dashboardFetch<T>(
   path: string,
   init?: { method?: string; body?: unknown },
@@ -207,6 +225,18 @@ export async function getDashboardChannels(guildId: string): Promise<DashboardCh
   return result.ok ? result.data.channels : null;
 }
 
+export async function getDashboardAnalytics(
+  guildId: string,
+  days = 30,
+  webhookId?: string,
+): Promise<AnalyticsResponse | null> {
+  const query = webhookId
+    ? `?days=${days}&webhook_id=${webhookId}`
+    : `?days=${days}`;
+  const result = await dashboardFetch<AnalyticsResponse>(`/guilds/${guildId}/analytics${query}`);
+  return result.ok ? result.data : null;
+}
+
 export function createWebhook(
   guildId: string,
   body: { comment: string; broken: boolean; acting_user_id: string },
@@ -216,7 +246,13 @@ export function createWebhook(
 
 export function updateWebhook(
   id: string,
-  body: { guild_id: string; comment?: string; broken?: boolean; acting_user_id: string },
+  body: {
+    guild_id: string;
+    comment?: string;
+    broken?: boolean;
+    batch_events?: boolean;
+    acting_user_id: string;
+  },
 ): Promise<ApiResult<{ ok: true }>> {
   return dashboardFetch(`/webhooks/${id}`, { method: 'PATCH', body });
 }
@@ -241,7 +277,13 @@ export function createRepo(
 
 export function updateRepo(
   id: string,
-  body: { guild_id: string; repo_name?: string; channel_id?: string; acting_user_id: string },
+  body: {
+    guild_id: string;
+    repo_name?: string;
+    channel_id?: string;
+    use_threads?: boolean;
+    acting_user_id: string;
+  },
 ): Promise<ApiResult<{ ok: true }>> {
   return dashboardFetch(`/repos/${id}`, { method: 'PATCH', body });
 }

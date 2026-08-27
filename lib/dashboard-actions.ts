@@ -37,7 +37,7 @@ export async function createWebhookAction(
 export async function updateWebhookAction(
   guildId: string,
   id: string,
-  fields: { comment?: string; broken?: boolean },
+  fields: { comment?: string; broken?: boolean; batch_events?: boolean },
 ): Promise<ApiResult<{ ok: true }>> {
   const auth = await assertManages(guildId);
   if ('error' in auth) return { ok: false, error: auth.error };
@@ -92,7 +92,7 @@ export async function createRepoAction(
 export async function updateRepoAction(
   guildId: string,
   id: string,
-  fields: { repo_name?: string; channel_id?: string },
+  fields: { repo_name?: string; channel_id?: string; use_threads?: boolean },
 ): Promise<ApiResult<{ ok: true }>> {
   const auth = await assertManages(guildId);
   if ('error' in auth) return { ok: false, error: auth.error };
@@ -164,4 +164,10 @@ export async function getChannelsAction(guildId: string) {
   const auth = await assertManages(guildId);
   if ('error' in auth) return null;
   return api.getDashboardChannels(guildId);
+}
+
+export async function getAnalyticsAction(guildId: string, days = 30, webhookId?: string) {
+  const auth = await assertManages(guildId);
+  if ('error' in auth) return null;
+  return api.getDashboardAnalytics(guildId, days, webhookId);
 }

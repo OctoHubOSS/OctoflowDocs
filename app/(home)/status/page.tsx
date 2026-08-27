@@ -65,7 +65,7 @@ export default async function StatusPage() {
       : null;
 
   return (
-    <main className="flex flex-1 flex-col items-center px-4 py-20 max-w-3xl mx-auto w-full gap-12">
+    <main className="flex flex-1 flex-col items-center overflow-x-hidden px-4 py-20 max-w-3xl mx-auto w-full gap-12">
       {/* Header */}
       <div className="flex flex-col items-center text-center gap-3">
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Status</h1>

@@ -10,7 +10,7 @@ import {
   resetWebhookSecretAction,
 } from '@/lib/dashboard-actions';
 
-type Webhook = { id: string; comment: string; broken: boolean };
+type Webhook = { id: string; comment: string; broken: boolean; batch_events: boolean };
 
 export function WebhookDialog({
   guildId,
@@ -24,6 +24,7 @@ export function WebhookDialog({
   const modalRef = useRef<ModalHandle>(null);
   const [comment, setComment] = useState(webhook?.comment ?? '');
   const [broken, setBroken] = useState(webhook?.broken ?? false);
+  const [batchEvents, setBatchEvents] = useState(webhook?.batch_events ?? false);
   const [error, setError] = useState<string | null>(null);
   const [revealSecret, setRevealSecret] = useState<{ label: string; value: string } | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -34,6 +35,7 @@ export function WebhookDialog({
     if (mode === 'create') {
       setComment('');
       setBroken(false);
+      setBatchEvents(false);
     }
   }
 
@@ -50,7 +52,11 @@ export function WebhookDialog({
         }
         setRevealSecret({ label: 'this secret', value: `${result.data.url}\nSecret: ${result.data.secret}` });
       } else if (webhook) {
-        const result = await updateWebhookAction(guildId, webhook.id, { comment, broken });
+        const result = await updateWebhookAction(guildId, webhook.id, {
+          comment,
+          broken,
+          batch_events: batchEvents,
+        });
         if (!result.ok) {
           setError(result.error);
           return;
@@ -124,6 +130,17 @@ export function WebhookDialog({
               <input type="checkbox" checked={broken} onChange={(e) => setBroken(e.target.checked)} />
               Mark as broken
             </label>
+
+            {mode === 'edit' && (
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={batchEvents}
+                  onChange={(e) => setBatchEvents(e.target.checked)}
+                />
+                Batch rapid pushes into one summary embed
+              </label>
+            )}
 
             {mode === 'edit' && webhook && (
               <button

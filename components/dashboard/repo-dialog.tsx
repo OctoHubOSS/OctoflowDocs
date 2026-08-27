@@ -7,7 +7,7 @@ import { createRepoAction, updateRepoAction } from '@/lib/dashboard-actions';
 import { getChannelsAction } from '@/lib/dashboard-actions';
 import type { DashboardChannel } from '@/lib/api';
 
-type Repo = { id: string; repo_name: string; channel_id: string };
+type Repo = { id: string; repo_name: string; channel_id: string; use_threads: boolean };
 
 export function RepoDialog({
   guildId,
@@ -23,6 +23,7 @@ export function RepoDialog({
   const modalRef = useRef<ModalHandle>(null);
   const [ownerName, setOwnerName] = useState(repo?.repo_name ?? '');
   const [channelId, setChannelId] = useState(repo?.channel_id ?? '');
+  const [useThreads, setUseThreads] = useState(repo?.use_threads ?? false);
   const [channels, setChannels] = useState<DashboardChannel[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -56,6 +57,7 @@ export function RepoDialog({
         const result = await updateRepoAction(guildId, repo.id, {
           repo_name: ownerName,
           channel_id: channelId,
+          use_threads: useThreads,
         });
         if (!result.ok) {
           setError(result.error);
@@ -120,6 +122,17 @@ export function RepoDialog({
               ))}
             </select>
           </label>
+
+          {mode === 'edit' && (
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={useThreads}
+                onChange={(e) => setUseThreads(e.target.checked)}
+              />
+              Post PR/issue activity into a thread per number
+            </label>
+          )}
 
           {error && <p className="text-sm text-red-500">{error}</p>}
 

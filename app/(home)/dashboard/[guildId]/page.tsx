@@ -3,13 +3,14 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { ArrowLeft, Hash, Filter } from 'lucide-react';
 import { getSession } from '@/lib/session';
-import { getDashboardGuild, type DashboardWebhook } from '@/lib/api';
+import { getDashboardGuild, getDashboardAnalytics, type DashboardWebhook } from '@/lib/api';
 import { deleteWebhookAction, deleteRepoAction, deleteModifierAction } from '@/lib/dashboard-actions';
 import { WebhookDialog } from '@/components/dashboard/webhook-dialog';
 import { RepoDialog } from '@/components/dashboard/repo-dialog';
 import { ModifierDialog } from '@/components/dashboard/modifier-dialog';
 import { ConfirmDelete } from '@/components/dashboard/confirm-delete';
 import { CopyButton } from '@/components/copy-button';
+import { AnalyticsChart } from '@/components/dashboard/analytics-chart';
 
 export const metadata: Metadata = {
   title: 'Server Dashboard',
@@ -37,7 +38,10 @@ export default async function GuildDashboardPage({
     redirect('/dashboard');
   }
 
-  const webhooks = await getDashboardGuild(guildId);
+  const [webhooks, analytics] = await Promise.all([
+    getDashboardGuild(guildId),
+    getDashboardAnalytics(guildId, 30),
+  ]);
 
   return (
     <main className="flex flex-1 flex-col px-4 py-20 max-w-3xl mx-auto w-full gap-8">
@@ -66,6 +70,8 @@ export default async function GuildDashboardPage({
           No webhooks yet in this server. Use the &quot;New Webhook&quot; button above to create one.
         </div>
       )}
+
+      {analytics && <AnalyticsChart data={analytics} />}
 
       {webhooks !== null && webhooks.length > 0 && (
         <div className="flex flex-col gap-6">
