@@ -8,6 +8,7 @@ import {
 import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { metadataImage } from '@/utils/metadata-image';
+import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -22,6 +23,7 @@ export default async function Page(props: {
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <InlineTOC items={page.data.toc} />
       <DocsBody>
         <MDX components={{ ...defaultMdxComponents }} />
       </DocsBody>
