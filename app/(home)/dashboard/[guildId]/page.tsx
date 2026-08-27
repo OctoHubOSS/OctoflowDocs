@@ -81,15 +81,15 @@ export default async function GuildDashboardPage({
 function WebhookCard({ guildId, webhook }: { guildId: string; webhook: DashboardWebhook }) {
   return (
     <div className="rounded-xl border border-fd-border bg-fd-card overflow-hidden">
-      <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-fd-border">
-        <div className="flex flex-col gap-0.5">
-          <span className="text-sm font-semibold">{webhook.comment || 'Untitled webhook'}</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-fd-muted-foreground font-mono">{webhook.id}</span>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 py-4 border-b border-fd-border">
+        <div className="flex flex-col gap-0.5 min-w-0">
+          <span className="text-sm font-semibold break-words">{webhook.comment || 'Untitled webhook'}</span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-xs text-fd-muted-foreground font-mono break-all">{webhook.id}</span>
             <CopyButton value={webhook.id} />
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           {webhook.broken && (
             <span className="text-xs font-medium px-2 py-1 rounded-full text-white bg-red-500/90">Broken</span>
           )}
@@ -118,12 +118,12 @@ function WebhookCard({ guildId, webhook }: { guildId: string; webhook: Dashboard
         ) : (
           <ul className="flex flex-col gap-1.5">
             {webhook.repos.map((repo) => (
-              <li key={repo.id} className="text-sm flex items-center justify-between gap-2">
-                <span>
+              <li key={repo.id} className="text-sm flex flex-wrap items-center justify-between gap-2">
+                <span className="min-w-0 break-words">
                   <span className="font-mono">{repo.repo_name}</span>
                   <span className="text-fd-muted-foreground"> → #{repo.channel_name ?? repo.channel_id}</span>
                 </span>
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 shrink-0">
                   <RepoDialog guildId={guildId} webhookId={webhook.id} mode="edit" repo={repo} />
                   <ConfirmDelete
                     itemLabel="repository"
@@ -160,7 +160,7 @@ function WebhookCard({ guildId, webhook }: { guildId: string; webhook: Dashboard
                     {mod.redirect_channel ? `, redirect → #${mod.redirect_channel_name ?? mod.redirect_channel}` : ''}
                     {` (priority ${mod.priority})`}
                   </span>
-                  <span className="text-fd-muted-foreground font-mono text-xs">{mod.events.join(', ')}</span>
+                  <span className="text-fd-muted-foreground font-mono text-xs break-words">{mod.events.join(', ')}</span>
                 </div>
                 <span className="flex items-center gap-2 shrink-0">
                   <ModifierDialog

@@ -30,6 +30,7 @@ function Footer() {
         <div className="flex items-center gap-4">
           <Link href="/status" className="hover:text-fd-foreground transition-colors">Status</Link>
           <Link href="/stats" className="hover:text-fd-foreground transition-colors">Stats</Link>
+          <Link href="/changelog" className="hover:text-fd-foreground transition-colors">Changelog</Link>
           <Link href="/terms" className="hover:text-fd-foreground transition-colors">Terms</Link>
           <Link href="/privacy" className="hover:text-fd-foreground transition-colors">Privacy</Link>
         </div>

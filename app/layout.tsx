@@ -39,7 +39,13 @@ export default function Layout({ children }: { children: ReactNode }) {
       className={`${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="flex flex-col min-h-screen font-sans">
+      {/* overflow-x-hidden here is a deliberate backstop: the page must never
+          scroll horizontally as a whole. Anything genuinely wide (tables,
+          code blocks, the status page's day strip) should scroll inside its
+          own overflow-x-auto container instead — this just guards against a
+          future one slipping through unclipped and dragging the whole page
+          sideways on mobile, the way the status page's tooltip once did. */}
+      <body className="flex flex-col min-h-screen font-sans overflow-x-hidden">
         <RootProvider>{children}</RootProvider>
       </body>
     </html>

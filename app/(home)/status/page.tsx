@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Database, Layers, Radio, Users, Server, ArrowRight } from 'lucide-react';
-import { getHealth, getStatusHistory } from '@/lib/api';
+import { getHealth, getStatusHistory, type DayUptime } from '@/lib/api';
 
 export const metadata: Metadata = {
   title: 'Status',
@@ -115,7 +115,8 @@ export default async function StatusPage() {
           {padded.map((day, i) => {
             const level = day ? dayLevel(day) : 'unknown';
             const label = day
-              ? `${day.date} — ${day.uptime_percent.toFixed(1)}% uptime, ${Math.round(day.avg_latency_ms)}ms avg`
+              ? `${day.date} - ${day.uptime_percent.toFixed(1)}% uptime, ${Math.round(day.avg_latency_ms)}ms avg` +
+                (day.source === 'external' ? ' (recorded by an independent external check)' : '')
               : 'No data';
             return (
               <div
@@ -123,7 +124,7 @@ export default async function StatusPage() {
                 className="group relative flex-1 h-8 rounded-[3px]"
                 style={{ backgroundColor: STATUS_COLOR[level], opacity: level === 'unknown' ? 0.25 : 1 }}
               >
-                <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-fd-border bg-fd-popover px-2.5 py-1.5 text-xs text-fd-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+                <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[min(80vw,260px)] -translate-x-1/2 rounded-md border border-fd-border bg-fd-popover px-2.5 py-1.5 text-xs text-fd-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
                   {label}
                 </div>
               </div>
@@ -156,7 +157,7 @@ export default async function StatusPage() {
   );
 }
 
-type DayUptimeOrPad = { date: string; uptime_percent: number; avg_latency_ms: number; checks: number } | null;
+type DayUptimeOrPad = DayUptime | null;
 
 function ComponentRow({
   icon: Icon,

@@ -14,6 +14,10 @@ export interface DayUptime {
   uptime_percent: number;
   avg_latency_ms: number;
   checks: number;
+  // Set only on days that came from the external checker, i.e. the internal
+  // (Postgres-backed) history had a gap there — see lib/api.ts's
+  // getStatusHistory for why gaps happen and how this fills them.
+  source?: 'external';
 }
 
 async function safeFetchJson<T>(url: string): Promise<T | null> {
@@ -30,8 +34,91 @@ export function getHealth(): Promise<HealthResponse | null> {
   return safeFetchJson<HealthResponse>(`${API_URL}/api/health`);
 }
 
-export function getStatusHistory(days = 90): Promise<DayUptime[] | null> {
+function getInternalStatusHistory(days = 90): Promise<DayUptime[] | null> {
   return safeFetchJson<DayUptime[]>(`${API_URL}/api/status/history?days=${days}`);
+}
+
+const EXTERNAL_HISTORY_URL =
+  'https://raw.githubusercontent.com/OctoHubOSS/Octoflow/main/status-history.ndjson';
+
+interface ExternalCheck {
+  checked_at: string;
+  reachable: boolean;
+  database: boolean;
+  discord: boolean;
+  latency_ms: number;
+}
+
+// The external checker (a GitHub Actions cron job, see
+// .github/workflows/external-status-check.yml in the bot repo) hits
+// /api/health from outside our own infrastructure and commits one line per
+// check to a plain file in the repo. It exists specifically because the
+// internal snapshotter shares a failure domain with the thing it's
+// checking — see the plan notes / CHANGELOG for the full reasoning. This
+// aggregates its raw per-check lines into the same per-day shape the Go
+// backend produces, so the two sources are interchangeable in the UI.
+async function getExternalStatusHistory(days: number): Promise<DayUptime[] | null> {
+  let text: string;
+  try {
+    const res = await fetch(EXTERNAL_HISTORY_URL, { cache: 'no-store' });
+    if (!res.ok) return null;
+    text = await res.text();
+  } catch {
+    return null;
+  }
+
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  const byDay = new Map<string, { upCount: number; total: number; latencySum: number }>();
+
+  for (const line of text.split('\n')) {
+    if (!line.trim()) continue;
+
+    let check: ExternalCheck;
+    try {
+      check = JSON.parse(line);
+    } catch {
+      continue;
+    }
+
+    const ts = Date.parse(check.checked_at);
+    if (Number.isNaN(ts) || ts < cutoff) continue;
+
+    const date = check.checked_at.slice(0, 10);
+    const entry = byDay.get(date) ?? { upCount: 0, total: 0, latencySum: 0 };
+    entry.total += 1;
+    entry.latencySum += check.latency_ms ?? 0;
+    if (check.reachable && check.database && check.discord) entry.upCount += 1;
+    byDay.set(date, entry);
+  }
+
+  return Array.from(byDay.entries())
+    .map(([date, { upCount, total, latencySum }]) => ({
+      date,
+      uptime_percent: total > 0 ? (100 * upCount) / total : 0,
+      avg_latency_ms: total > 0 ? latencySum / total : 0,
+      checks: total,
+      source: 'external' as const,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// Prefers the internal (Postgres-backed, higher-resolution) history for any
+// day it actually has data for. Falls back to the external checker's view of
+// that same day only when the internal snapshotter missed it entirely — the
+// exact gap-filling this dual-source setup exists for.
+export async function getStatusHistory(days = 90): Promise<DayUptime[] | null> {
+  const [internal, external] = await Promise.all([
+    getInternalStatusHistory(days),
+    getExternalStatusHistory(days),
+  ]);
+
+  if (!internal && !external) return null;
+
+  const byDate = new Map<string, DayUptime>();
+  for (const day of external ?? []) byDate.set(day.date, day);
+  for (const day of internal ?? []) byDate.set(day.date, day); // internal wins on overlap
+
+  return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
 }
 
 export interface DashboardRepo {
